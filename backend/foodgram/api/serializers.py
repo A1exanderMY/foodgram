@@ -73,7 +73,7 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('email', "id", 'username', 'first_name',
+        fields = ('email', 'id', 'username', 'first_name',
                   'last_name', 'is_subscribed', 'avatar')
 
     def get_is_subscribed(self, obj):
@@ -333,17 +333,3 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         instance.tags.set(tags)
         return super().update(instance, validated_data)
-
-
-class ShortLinkSerializer(serializers.ModelSerializer):
-    short_link = serializers.SerializerMethodField(
-        'get_short_url', read_only=True)
-
-    class Meta:
-        model = Recipe
-        fields = ('short_link',)
-
-    def get_short_url(self, obj):
-        if obj.image:
-            return obj.image.url
-        return None

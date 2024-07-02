@@ -83,7 +83,7 @@ GET http://127.0.0.1:8000/api/recipes/download_shopping_cart/
 Authorization: Token 715b08612b1564e652ead782654f411729870bc3
 
 ###
-GET http://127.0.0.1:8000/api/recipes/?tags=lunch&tags=breakfast
+GET http://127.0.0.1:8000/api/recipes/?tags=lunch&tags=breakfast&is_in
 Authorization: Token 715b08612b1564e652ead782654f411729870bc3
 ###
 GET http://127.0.0.1:8000/api/recipes/

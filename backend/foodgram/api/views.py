@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .filters import RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .paginators import LimitPageNumberPaginator
 from .permissions import IsAdminOrReadOnly, IsAuthorOrAdminOrReadOnly
 from .serializers import (
@@ -17,13 +17,12 @@ from .serializers import (
     RecipeCreateSerializer,
     RecipeGetSerializer,
     ShortRecipeSerializer,
-    ShortLinkSerializer,
     SubscriptionSerializer,
     TagSerializer,
     UserSerializer
 )
 from .utils import create_shopping_list_report
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag 
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from users.models import Subscriber, User
 
 
@@ -41,8 +40,8 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ('^name',)
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = IngredientFilter
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
 
@@ -154,7 +153,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     pagination_class = LimitPageNumberPaginator
-    http_method_names = ['get', 'post', 'delete', 'patch']
+    http_method_names = ['get', 'post', 'delete', 'put']
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve', 'user_self_profile'):
@@ -179,18 +178,18 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @action(
-        methods=['patch', 'delete'], detail=False, url_path='me/avatar',
+        methods=['put', 'delete'], detail=False, url_path='me/avatar',
         permission_classes=[IsAuthenticated],
         serializer_class=AvatarUserSerializer
     )
     def user_avatar(self, request):
         """Загрузка и удаление аватара пользователя."""
         user = self.request.user
-        if request.method == 'PATCH':
+        if request.method == 'PUT':
             serializer = self.get_serializer(user, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         if request.method == 'DELETE':
             user.avatar.delete()
             user.save()
