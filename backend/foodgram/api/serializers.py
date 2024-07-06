@@ -1,5 +1,4 @@
 import base64
-
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.core.validators import (
@@ -338,3 +337,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         instance.tags.set(tags)
         return super().update(instance, validated_data)
+
+
+class ShortLinkSerializer(serializers.Serializer):
+    short_url = serializers.CharField()
