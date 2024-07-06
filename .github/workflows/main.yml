@@ -79,7 +79,7 @@ jobs:
         with:
           # Параметр context: ./backend/ указывает, что нужный Dockerfile 
           # находится в ./backend/
-          context: ./backend/
+          context: ./backend/foodgram/
           # Параметр push: true указывает, что образ нужно не только собрать,
           # но и отправить на Docker Hub
           push: true
@@ -127,7 +127,7 @@ jobs:
       - name: Push to DockerHub
         uses: docker/build-push-action@v4
         with:
-          context: ./nginx/
+          context: ./infra/
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-gateway:latest
   deploy:
