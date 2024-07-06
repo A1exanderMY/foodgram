@@ -17,7 +17,7 @@ EMAIL_MAX_LENGTH = 254
 
 
 class TagSerializer(serializers.ModelSerializer):
-    """СПолучение тегов."""
+    """Получение тегов."""
 
     name = serializers.CharField(
         validators=[
@@ -116,7 +116,7 @@ class UserSerializer(UserCreateSerializer):
             ),
             RegexValidator(
                 regex=r'^[\w.@+-]+$',
-                message='Имя пользователя должно'
+                message='Имя пользователя'
                         'содержит недопустимые символы',
             ),
         ]
@@ -129,7 +129,8 @@ class UserSerializer(UserCreateSerializer):
             ),
             RegexValidator(
                 regex=r'^[\w.@+-]+$',
-                message='Адрес электронной почты содержит недопустимые символы',
+                message='Адрес электронной почты'
+                        'содержит недопустимые символы',
             ),
         ]
     )
@@ -260,14 +261,14 @@ class IngredientCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = ('id', 'amount')
-    
+
     """def validate_amount(self, value):
         if value <= 0:
             raise serializers.ValidationError(
                 'Количество ингридиента должно быть больше 0'
             )
         return value"""
-    
+
     def validate(self, data):
         if data['amount'] <= 0:
             raise serializers.ValidationError(

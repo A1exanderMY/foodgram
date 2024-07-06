@@ -18,6 +18,3 @@ def insert_varible_into_table(id, measurement_unit, name):
 for i in enumerate(list):
     insert_varible_into_table(i[0], i[1].get('measurement_unit'), i[1].get('name'))
 print("Все записи успешно вставлены ​​в таблицу recipes_ingredient")
-
-
-

@@ -2,9 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.serializers import SetPasswordSerializer
-from rest_framework import exceptions, filters, status, viewsets
+from rest_framework import exceptions, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .filters import IngredientFilter, RecipeFilter
@@ -71,7 +71,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
-        if request.method == "POST":
+        if request.method == 'POST':
             if Favorite.objects.filter(
                 user=request.user, recipe=recipe
             ).exists():
@@ -83,7 +83,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 recipe, context={'request': request}
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if request.method == "DELETE":
+        if request.method == 'DELETE':
             if not Favorite.objects.filter(
                 user=request.user, recipe=recipe
             ).exists():
@@ -114,7 +114,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 recipe, context={'request': request}
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        elif request.method == "DELETE":
+        elif request.method == 'DELETE':
             if not ShoppingCart.objects.filter(
                 user=request.user, recipe=recipe
             ).exists():
@@ -139,13 +139,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
         return response
 
-    @action(detail=True, permission_classes=[AllowAny], url_path='get-link')
+    """@action(detail=True, permission_classes=[AllowAny], url_path='get-link')
     def short_link(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
         serializer = ShortLinkSerializer(
             recipe, context={'request': request}
         )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)"""
 
 
 class UserViewSet(viewsets.ModelViewSet):

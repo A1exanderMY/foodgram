@@ -1,0 +1,47 @@
+
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+
+  db:
+    container_name: foodgram-db
+    image: postgres:13.10
+    env_file: .env
+    # volumes — список подключаемых к контейнеру volumes:
+    # - имя_volume:директория_контейнера
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  
+  backend:
+    container_name: foodgram-backend
+    build: ./backend/foodgram/
+    env_file: .env
+    depends_on:
+      - db
+    # Тут подключаем volume к backend
+    volumes:
+      - static:/backend_static
+      - media:/app/media
+
+  frontend:
+    container_name: foodgram-front
+    build: ./frontend/
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static:/frontend_static
+
+  nginx:
+    container_name: foodgram-proxy
+    #image: nginx:1.25.4-alpine
+    build: ./infra/
+    # Ключ ports устанавливает
+    # перенаправление всех запросов с порта 8000 хоста
+    # на порт 80 контейнера.
+    ports:
+      - 9000:80
+    volumes:
+      - static:/static/
+      - media:/media/

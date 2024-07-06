@@ -3,8 +3,9 @@ from recipes.models import Ingredient, Recipe, Tag
 from users.models import User
 
 
-
 class RecipeFilter(django_filters.FilterSet):
+    """Фильтрация рецептов."""
+
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
         field_name="tags__slug",
