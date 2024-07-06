@@ -27,7 +27,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'djoser',
+    'django_short_url',
 ]
+
+# Redirect url when short url not exists
+DJANGO_SHORT_URL_REDIRECT_URL = ''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,8 +66,8 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/data/db.sqlite3'
-        #'NAME': BASE_DIR / 'db.sqlite3',
+        #'NAME': '/data/db.sqlite3'
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }"""
 

@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django_short_url.views import get_surl
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.serializers import SetPasswordSerializer
 from rest_framework import exceptions, status, viewsets
@@ -139,13 +140,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
         return response
 
-    """@action(detail=True, permission_classes=[AllowAny], url_path='get-link')
-    def short_link(self, request, pk):
-        recipe = get_object_or_404(Recipe, pk=pk)
-        serializer = ShortLinkSerializer(
-            recipe, context={'request': request}
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)"""
+
+def short_link(request, id):
+    long_url = request.path
+    short_url = f'https:localhost:9000/recipes/{id}' + get_surl(long_url)
+    response = HttpResponse(
+        short_url, content_type="text/plain", status=status.HTTP_201_CREATED
+    )
+    return response
 
 
 class UserViewSet(viewsets.ModelViewSet):

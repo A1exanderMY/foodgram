@@ -139,6 +139,7 @@ dmypy.json
 .vscode
 
 requests.http
+add_database.py
 
 static/
 media/

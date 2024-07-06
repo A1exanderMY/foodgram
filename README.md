@@ -9,11 +9,12 @@
 ## 5. [Настройка CI/CD](#5)
 
 ### 1. Описание <a id=1></a>
-Foodgrm - сайт для публикации рецептов.
+Foodgram 'https://thefoodgram.zapto.org/'- сайт для публикации рецептов.
+
 ### Используемые технологии
 - [Python 3.10](https://docs.python.org/3.10/)
 - [Node.js 18.20](https://nodejs.org/en/download)
-- [Django 3.2.16](https://docs.djangoproject.com/en/5.0/))
+- [Django 3.2.16](https://docs.djangoproject.com/en/5.0/)
 - [DRF 3.12.4](https://www.django-rest-framework.org/)
 - [Docker](https://www.docker.com/)
 - [Nginx](https://nginx.org/)
@@ -34,9 +35,9 @@ Foodgrm - сайт для публикации рецептов.
     ```
     cd frontend
     docker build -t <your_username>/foodgram_frontend .
-    cd ../backend
+    cd ../backend/foodgram/
     docker build -t your_username/foodgram_backend .
-    cd ../nginx
+    cd ../infra
     docker build -t your_username/foodgram_gateway . 
     ```
 
@@ -129,7 +130,6 @@ Foodgrm - сайт для публикации рецептов.
     USER                           # имя пользователя
     SSH_KEY                        # содержимое приватного SSH-ключа (cat ~/.ssh/id_rsa)
     SSH_PASSPHRASE                 # пароль для SSH-ключа
-
     TELEGRAM_TO                    # ID вашего телеграм-аккаунта (можно узнать у @userinfobot, команда /start)
     TELEGRAM_TOKEN                 # токен вашего бота (получить токен можно у @BotFather, команда /token, имя бота)
     ```
