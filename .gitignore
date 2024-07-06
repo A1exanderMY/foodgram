@@ -138,5 +138,7 @@ dmypy.json
 .idea
 .vscode
 
+requests.http
+
 static/
 media/

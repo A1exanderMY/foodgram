@@ -1,7 +1,5 @@
 import base64
 
-from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.core.validators import (
@@ -9,6 +7,8 @@ from django.core.validators import (
     MinValueValidator,
     RegexValidator
 )
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from recipes.models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag
@@ -21,7 +21,7 @@ EMAIL_MAX_LENGTH = 254
 
 
 class TagSerializer(serializers.ModelSerializer):
-    """Получение тегов."""
+    """Получение тэгов."""
 
     name = serializers.CharField(
         validators=[

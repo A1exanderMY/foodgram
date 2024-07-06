@@ -6,6 +6,8 @@ from rest_framework import exceptions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
+from users.models import Subscriber, User
 
 from .filters import IngredientFilter, RecipeFilter
 from .paginators import LimitPageNumberPaginator
@@ -22,8 +24,6 @@ from .serializers import (
     UserSerializer
 )
 from .utils import create_shopping_list_report
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
-from users.models import Subscriber, User
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
