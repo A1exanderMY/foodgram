@@ -143,7 +143,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 def short_link(request, id):
     long_url = request.path
-    short_url = f'https:localhost:9000/recipes/{id}' + get_surl(long_url)
+    short_url = f"https:localhost:9000/recipes/{id}" + get_surl(long_url)
     response = HttpResponse(
         short_url, content_type="text/plain", status=status.HTTP_201_CREATED
     )
