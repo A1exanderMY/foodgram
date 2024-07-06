@@ -6,9 +6,11 @@ from .models import (
 
 admin.site.disable_action("delete_selected")
 
+
 @admin.action(description='Удалить %(verbose_name)s')
 def delete(modeladmin, request, obj):
     obj.delete()
+
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient

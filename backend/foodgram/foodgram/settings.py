@@ -1,4 +1,5 @@
 import os
+
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -104,7 +105,7 @@ STATIC_URL = '/static/'
 # Указываем корневую директорию для сборки статических файлов;
 # в контейнере это будет /app/collected_static
 # Теперь при вызове команды python manage.py collectstatic
-# Django будет копировать все статические файлы в директорию collected_static 
+# Django будет копировать все статические файлы в директорию collected_static
 STATIC_ROOT = BASE_DIR / 'collected_static'
 
 MEDIA_URL = '/media/'

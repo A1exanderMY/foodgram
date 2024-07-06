@@ -1,11 +1,15 @@
 import base64
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.core.files.base import ContentFile
 from django.db import transaction
-from django.core.validators import MaxLengthValidator, MinValueValidator, RegexValidator
+from django.core.validators import (
+    MaxLengthValidator,
+    MinValueValidator,
+    RegexValidator
+)
 from djoser.serializers import UserCreateSerializer, UserSerializer
-
 from recipes.models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag
 )
@@ -300,7 +304,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         fields = (
             'ingredients', 'tags', 'image', 'name', 'text', 'cooking_time'
         )
-    
+
     def to_representation(self, instance):
         serializer = RecipeGetSerializer(instance)
         return serializer.data

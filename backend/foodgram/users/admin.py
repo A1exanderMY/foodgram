@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from users.models import Subscriber, User
 
 admin.site.empty_value_display = 'None'
@@ -12,9 +11,11 @@ admin.site.index_title = 'Welcome to Foodgram admin panel'
 def delete(modeladmin, request, obj):
     obj.delete()
 
+
 @admin.display(description='Имя')
 def upper_case_name(obj):
     return f'{obj.first_name} {obj.last_name}'.title()
+
 
 class UserAdmin(admin.ModelAdmin):
     list_display = (
