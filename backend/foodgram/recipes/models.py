@@ -132,7 +132,7 @@ class ShortLink(models.Model):
     """Модель короткой ссылки."""
 
     lurl = models.URLField(max_length=255)
-    surl = models.CharField(unique=True)
+    surl = models.TextField(unique=True)
 
     class Meta:
         verbose_name = 'Короткая ссылка'
