@@ -160,7 +160,8 @@ def short_link(request, recipe_id):
         )
         return Response(serializer.data)
     domain = "http://" + get_current_site(request).name + '/s/'
-    surl = domain + (''.join(random.sample(ascii_letters, k=4)))
+    print(domain)
+    surl = domain + (''.join(random.sample(ascii_letters, k=7)))
     link, _ = ShortLink.objects.get_or_create(
         lurl=recipe.get_absolute_url(),
         surl=surl
@@ -170,8 +171,8 @@ def short_link(request, recipe_id):
 
 
 def get_full_link(request, short_link):
-    # domain = "http://" + get_current_site(request).name + '/s/'
-    link = get_object_or_404(ShortLink, surl=settings.DOMAIN + short_link).lurl
+    domain = "http://" + get_current_site(request).name + '/s/'
+    link = get_object_or_404(ShortLink, surl=domain + short_link).lurl
     return redirect(link)
 
 
