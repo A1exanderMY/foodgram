@@ -237,7 +237,8 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     text = serializers.CharField()
     cooking_time = serializers.IntegerField(
         validators=[MinValueValidator(
-            1, 'Время приготовления должно быть больше 0'),]
+            1, 'Время приготовления должно быть больше 0'),
+        ]
     )
 
     class Meta:

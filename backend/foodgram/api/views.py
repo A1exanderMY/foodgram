@@ -159,7 +159,6 @@ def short_link(request, recipe_id):
         )
         return Response(serializer.data)
     domain = "http://" + get_current_site(request).name + '/s/'
-    print(domain)
     surl = domain + (''.join(random.sample(ascii_letters, k=7)))
     link, _ = ShortLink.objects.get_or_create(
         lurl=recipe.get_absolute_url(),
