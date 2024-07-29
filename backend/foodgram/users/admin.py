@@ -18,25 +18,13 @@ def upper_case_name(obj):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk',
-        'username',
-        upper_case_name,
-        'email',
-    )
-    search_fields = ('username', 'email', 'last_name')
-    list_filter = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('username', upper_case_name, 'email',)
+    search_fields = ('first_name', 'email')
     actions = [delete]
 
 
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk',
-        'user',
-        'author'
-    )
-    list_filter = ('user', 'author')
-    search_fields = ('user__username', 'user__email')
+    list_display = ('user', 'author')
 
 
 admin.site.register(User, UserAdmin)

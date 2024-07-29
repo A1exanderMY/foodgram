@@ -7,25 +7,20 @@ class User(AbstractUser):
 
     email = models.EmailField(
         verbose_name='Адрес электронной почты',
-        max_length=254,
-        unique=True,
+        max_length=254, unique=True,
     )
     username = models.CharField(
         verbose_name='Имя пользователя',
-        max_length=150,
-        null=True,
-        unique=True
+        max_length=150, null=True, unique=True
     )
     first_name = models.CharField(max_length=150, verbose_name='Имя')
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
     avatar = models.ImageField(
-        upload_to='users/',
-        null=True,
-        default=None
+        upload_to='users/', null=True, default=None
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username', 'first_name', 'last_name')
+    REQUIRED_FIELDS = ('username',)
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -40,16 +35,13 @@ class Subscriber(models.Model):
     """Класс подписок на авторов."""
 
     user = models.ForeignKey(
-        User,
-        verbose_name='Пользователь',
-        related_name='follower',
-        on_delete=models.CASCADE,
-        help_text='Текущий пользователь')
+        User, verbose_name='Пользователь', related_name='follower',
+        on_delete=models.CASCADE
+    )
     author = models.ForeignKey(
-        User,
-        verbose_name='Автор',
-        related_name='following',
-        on_delete=models.CASCADE,)
+        User, verbose_name='Автор', related_name='following',
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         verbose_name = 'Подписка'

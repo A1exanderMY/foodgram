@@ -8,10 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='key')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
-
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -27,11 +26,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'djoser',
-    'django_short_url',
+    #'django_short_url',
 ]
-
-# Redirect url when short url not exists
-DJANGO_SHORT_URL_REDIRECT_URL = ''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,7 +62,6 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': '/data/db.sqlite3'
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }"""
@@ -133,3 +128,8 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+USERNAME_MAX_LENGTH = 150
+EMAIL_MAX_LENGTH = 254
+
+DOMAIN = 'http://127.0.0.1:8000/s/'

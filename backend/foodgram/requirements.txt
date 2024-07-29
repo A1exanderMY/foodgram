@@ -15,7 +15,6 @@ django-admin==2.0.2
 django-excel-response2==3.0.6
 django-filter==23.1
 django-models-ext==1.1.11
-django-short-url==1.1.8
 django-six==1.0.5
 django-templated-mail==1.1.1
 djangorestframework==3.15.1
@@ -29,7 +28,6 @@ furl==2.1.3
 gunicorn==20.1.0
 idna==3.4
 iniconfig==2.0.0
-install==1.3.5
 isort==5.13.2
 isoweek==1.3.3
 itypes==1.2.0

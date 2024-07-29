@@ -8,14 +8,10 @@ class Command(BaseCommand):
     """Добавление ингридиентов в БД."""
 
     def handle(self, *args, **kwargs):
-        with open(
-                'recipes/data/ingredients.csv', 'r',
-                encoding='UTF-8'
-        ) as ingredients:
+        path = 'recipes/data/ingredients.csv'
+        with open(path, 'r', encoding='UTF-8') as ingredients:
             for row in reader(ingredients):
                 Ingredient.objects.get_or_create(
                     name=row[0], measurement_unit=row[1],
                 )
-        self.stdout.write(
-            self.style.SUCCESS('Данные ингридиентов успешно загружены')
-        )
+        self.stdout.write(self.style.SUCCESS('Ингридиенты загружены в БД'))
