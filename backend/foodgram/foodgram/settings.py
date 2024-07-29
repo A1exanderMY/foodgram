@@ -76,6 +76,10 @@ DATABASES = {
     }
 }
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

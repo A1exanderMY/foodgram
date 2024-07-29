@@ -9,7 +9,7 @@
 ## 5. [Настройка CI/CD](#5)
 
 ### 1. Описание <a id=1></a>
-Foodgram 'https://thefoodgram.zapto.org/'- сайт для публикации рецептов.
+Foodgram https://thefoodgram.zapto.org/ - сайт для публикации рецептов.
 
 ### Используемые технологии
 - [Python 3.10](https://docs.python.org/3.10/)
@@ -81,16 +81,16 @@ Foodgram 'https://thefoodgram.zapto.org/'- сайт для публикации 
 5. Запустите Docker Compose:
 
     ```
-    sudo docker-compose -f /home/YOUR_USERNAME/foodgram/docker-compose.production.yml up -d
+    sudo docker compose -f docker-compose.production.yml up -d
     ```
 
 6. Выполните миграции, загрузите данные ингридиентов в БД, соберите статические файлы бэкенда и скопируйте их в `/backend_static/static/`:
 
     ```
-    sudo docker-compose -f docker-compose.production.yml exec backend python manage.py migrate
-    sudo docker-compose -f docker-compose.production.yml exec backend python manage.py collectstatic
-    sudo docker-compose -f docker-compose.production.yml exec backend python manage.py load_data
-    sudo docker-compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
+    sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+    sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+    sudo docker compose -f docker-compose.production.yml exec backend python manage.py load_data
+    sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
     ```
 
 7. Откройте конфигурационный файл Nginx в редакторе nano:
