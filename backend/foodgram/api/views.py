@@ -2,7 +2,6 @@ import random
 from string import ascii_letters
 
 from django.contrib.sites.shortcuts import get_current_site
-from django.conf import settings
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
