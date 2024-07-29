@@ -170,8 +170,9 @@ def short_link(request, recipe_id):
 
 
 def get_full_link(request, short_link):
-    domain = "http://" + get_current_site(request).name + '/s/'
-    link = get_object_or_404(ShortLink, surl=domain + short_link).lurl
+    domain = 'http://' + get_current_site(request).name + '/s/'
+    link = get_object_or_404(ShortLink, surl=domain + short_link)
+    link = link.lurl.replace('/api', '', 1)[:-1]
     return redirect(link)
 
 
