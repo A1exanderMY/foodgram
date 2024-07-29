@@ -76,9 +76,7 @@ DATABASES = {
     }
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+CSRF_TRUSTED_ORIGINS = ['https://thefoodgram.zapto.org/']
 
 AUTH_PASSWORD_VALIDATORS = [
     {
