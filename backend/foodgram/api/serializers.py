@@ -14,7 +14,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from recipes.models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShortLink, Tag
 )
-from users.models import Subscriber, User
+from users.models import User
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -58,7 +58,9 @@ class CustomUserSerializer(UserSerializer):
         request = self.context['request']
         if request.user.is_anonymous:
             return False
-        return object.following.filter(user=request.user, author=object).exists()
+        return object.following.filter(
+            user=request.user, author=object
+        ).exists()
 
 
 class AvatarUserSerializer(serializers.ModelSerializer):

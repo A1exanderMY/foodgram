@@ -15,7 +15,13 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from recipes.models import (
-    Favorite, Ingredient, Recipe, RecipeIngredient, ShortLink, ShoppingCart, Tag
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    ShortLink,
+    ShoppingCart,
+    Tag
 )
 from users.models import Subscriber, User
 
@@ -81,14 +87,18 @@ class RecipeViewSet(ModelViewSet):
         """Добавить рецепт в избранное."""
         recipe = Recipe.objects.get(pk=pk)
         if request.method == 'POST':
-            favorite = Favorite.objects.filter(user=self.request.user, recipe=recipe)
+            favorite = Favorite.objects.filter(
+                user=self.request.user, recipe=recipe
+            )
             if favorite:
                 raise ValidationError('Рецепт уже добавлен')
             Favorite.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         if request.method == 'DELETE':
-            instance = Favorite.objects.filter(user=self.request.user, recipe=recipe)
+            instance = Favorite.objects.filter(
+                user=self.request.user, recipe=recipe
+            )
             if not instance:
                 raise ValidationError('Рецепт уже удален')
             instance.delete()
@@ -100,14 +110,18 @@ class RecipeViewSet(ModelViewSet):
         """Добавить рецепт в корзину."""
         recipe = Recipe.objects.get(pk=pk)
         if request.method == 'POST':
-            shopping_cart = ShoppingCart.objects.filter(user=self.request.user, recipe=recipe)
+            shopping_cart = ShoppingCart.objects.filter(
+                user=self.request.user, recipe=recipe
+            )
             if shopping_cart:
                 raise ValidationError('Рецепт уже добавлен')
             ShoppingCart.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         if request.method == 'DELETE':
-            instance = ShoppingCart.objects.filter(user=self.request.user, recipe=recipe)
+            instance = ShoppingCart.objects.filter(
+                user=self.request.user, recipe=recipe
+            )
             if not instance:
                 raise ValidationError('Рецепт уже удален из корзины')
             instance.delete()
@@ -115,12 +129,15 @@ class RecipeViewSet(ModelViewSet):
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
-        shopping_cart = ShoppingCart.objects.filter(user=self.request.user).values('recipe_id')
+        shopping_cart = ShoppingCart.objects.filter(
+            user=self.request.user).values('recipe_id')
         if not shopping_cart:
             raise ValidationError('Список покупок пуст')
         ingredients = RecipeIngredient.objects.filter(
             recipe__in=shopping_cart
-        ).values('ingredient__name', 'ingredient__measurement_unit').annotate(amount=Sum('amount'))
+        ).values('ingredient__name', 'ingredient__measurement_unit').annotate(
+            amount=Sum('amount')
+        )
         groceries_list = ''
         for item in ingredients:
             groceries_list += (
@@ -133,11 +150,14 @@ class RecipeViewSet(ModelViewSet):
         )
         return response
 
+
 @api_view(['GET'])
 def short_link(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     if ShortLink.objects.filter(lurl=recipe.get_absolute_url()).exists():
-        serializer = ShortLinkSerializer(ShortLink.objects.get(lurl=recipe.get_absolute_url()))
+        serializer = ShortLinkSerializer(
+            ShortLink.objects.get(lurl=recipe.get_absolute_url())
+        )
         return Response(serializer.data)
     domain = "http://" + get_current_site(request).name + '/s/'
     surl = domain + (''.join(random.sample(ascii_letters, k=6)))
@@ -150,7 +170,7 @@ def short_link(request, recipe_id):
 
 
 def get_full_link(request, short_link):
-    #domain = "http://" + get_current_site(request).name + '/s/'
+    # domain = "http://" + get_current_site(request).name + '/s/'
     link = get_object_or_404(ShortLink, surl=settings.DOMAIN + short_link).lurl
     return redirect(link)
 
