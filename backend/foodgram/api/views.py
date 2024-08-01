@@ -104,7 +104,7 @@ class RecipeViewSet(ModelViewSet):
             permission_classes=[IsAuthenticated], url_path='shopping_cart')
     def add_to_shopping_cart(self, request, pk):
         """Добавить рецепт в корзину."""
-        recipe = Recipe.objects.get(pk=pk)
+        recipe = get_object_or_404(Recipe, pk=pk)
         if request.method == 'POST':
             shopping_cart = ShoppingCart.objects.filter(
                 user=self.request.user, recipe=recipe
