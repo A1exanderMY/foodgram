@@ -91,12 +91,14 @@ class RecipeViewSet(ModelViewSet):
             Favorite.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            if not instance.exists():
-                return Response('Рецепт уже удален',
-                                status=status.HTTP_301_MOVED_PERMANENTLY)
-            instance.delete()
-            return Response('Рецепт удален', status=status.HTTP_204_NO_CONTENT)
+        if request.method == 'DELETE':
+            if instance.exists():
+                instance.delete()
+                return Response(
+                    'Рецепт удален', status=status.HTTP_204_NO_CONTENT
+                )
+            return Response('Рецепт уже удален',
+                            status=status.HTTP_301_MOVED_PERMANENTLY)
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated], url_path='shopping_cart')
@@ -116,10 +118,11 @@ class RecipeViewSet(ModelViewSet):
         if request.method == 'DELETE':
             if instance.exists():
                 instance.delete()
-                return Response('Рецепт удален', status=status.HTTP_204_NO_CONTENT)
+                return Response(
+                    'Рецепт удален', status=status.HTTP_204_NO_CONTENT
+                )
             return Response('Рецепт уже удален из корзины',
-                                status=status.HTTP_400_BAD_REQUEST)
-            
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
