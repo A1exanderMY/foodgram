@@ -86,8 +86,7 @@ class RecipeViewSet(ModelViewSet):
         )
         if request.method == 'POST':
             if instance.exists():
-                return Response('Рецепт уже добавлен',
-                                status=status.HTTP_400_BAD_REQUEST)
+                return Response('Рецепт уже добавлен')
             Favorite.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -110,8 +109,7 @@ class RecipeViewSet(ModelViewSet):
         )
         if request.method == 'POST':
             if instance.exists():
-                return Response('Рецепт уже добавлен',
-                                status=status.HTTP_400_BAD_REQUEST)
+                return Response('Рецепт уже добавлен')
             ShoppingCart.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -121,8 +119,7 @@ class RecipeViewSet(ModelViewSet):
                 return Response(
                     'Рецепт удален', status=status.HTTP_204_NO_CONTENT
                 )
-            return Response('Рецепт уже удален из корзины',
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response('Рецепт уже удален из корзины')
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
