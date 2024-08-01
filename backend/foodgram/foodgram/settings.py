@@ -12,7 +12,7 @@ DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
 
-CSRF_TRUSTED_ORIGINS = 'https://thefoodgram.zapto.org'
+CSRF_TRUSTED_ORIGINS = ['https://thefoodgram.zapto.org']
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -73,7 +73,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'django'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
@@ -94,7 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
