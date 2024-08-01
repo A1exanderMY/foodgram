@@ -1,7 +1,4 @@
-import base64
-
 from django.conf import settings
-from django.core.files.base import ContentFile
 from django.core.validators import (
     MaxLengthValidator,
     MinValueValidator,
@@ -11,6 +8,8 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from djoser.serializers import UserCreateSerializer, UserSerializer
+
+from .fields import Base64ImageField
 from recipes.models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShortLink, Tag
 )
@@ -26,22 +25,11 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    """Получение ингридиентов."""
+    """Получение ингредиентов."""
 
     class Meta:
         model = Ingredient
         fields = '__all__'
-
-
-class Base64ImageField(serializers.ImageField):
-    """Вспомогательный сериализатор для загрузки изображений."""
-
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-        return super().to_internal_value(data)
 
 
 class CustomUserSerializer(UserSerializer):
@@ -204,7 +192,7 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
 
 class IngredientCreateSerializer(serializers.ModelSerializer):
-    """Проверка ингридиента при создании рецепта."""
+    """Проверка ингредиента при создании рецепта."""
 
     id = serializers.PrimaryKeyRelatedField(
         queryset=Ingredient.objects.all()
@@ -248,12 +236,16 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         )
 
     def create_ingredients(self, ingredients, recipe):
+        ingredients_list = []
         for ingredient in ingredients:
-            amount = ingredient['amount']
-            ingredient = ingredient['id']
-            ingredients, _ = RecipeIngredient.objects.get_or_create(
-                recipe=recipe, ingredient=ingredient, amount=amount
+            ingredients_list.append(
+                RecipeIngredient(
+                    recipe=recipe, amount=ingredient['amount'],
+                    ingredient=ingredient['id']
+                )
             )
+        print(ingredients_list)
+        RecipeIngredient.objects.bulk_create(ingredients_list)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -261,7 +253,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags')
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
-        recipe.save()
         self.create_ingredients(ingredients, recipe)
         return recipe
 
