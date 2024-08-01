@@ -244,7 +244,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     ingredient=ingredient['id']
                 )
             )
-        print(ingredients_list)
         RecipeIngredient.objects.bulk_create(ingredients_list)
 
     @transaction.atomic

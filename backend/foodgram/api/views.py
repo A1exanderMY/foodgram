@@ -113,12 +113,13 @@ class RecipeViewSet(ModelViewSet):
             ShoppingCart.objects.create(user=self.request.user, recipe=recipe)
             serializer = self.get_serializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            if not instance.exists():
-                return Response('Рецепт уже удален из корзины',
+        if request.method == 'DELETE':
+            if instance.exists():
+                instance.delete()
+                return Response('Рецепт удален', status=status.HTTP_204_NO_CONTENT)
+            return Response('Рецепт уже удален из корзины',
                                 status=status.HTTP_400_BAD_REQUEST)
-            instance.delete()
-            return Response('Рецепт удален', status=status.HTTP_204_NO_CONTENT)
+            
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
