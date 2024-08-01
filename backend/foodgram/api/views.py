@@ -119,7 +119,8 @@ class RecipeViewSet(ModelViewSet):
                 return Response(
                     'Рецепт удален', status=status.HTTP_204_NO_CONTENT
                 )
-            return Response('Рецепт уже удален из корзины')
+            return Response('Рецепт уже удален из корзины',
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
