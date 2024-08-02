@@ -179,5 +179,6 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: ${{ github.actor }} внес изменение - ${{ github.event.commits[0].message }}
+        message: ${{ github.actor }} внес изменение в репозиторий ${{github.repository}} 
+                 с комментарием - ${{ github.event.commits[0].message }}
                  Подробности https://github.com/${{ github.repository }}/commit/${{github.sha}}

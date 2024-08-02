@@ -12,7 +12,7 @@ DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
 
-CSRF_TRUSTED_ORIGINS = ['https://thefoodgram.zapto.org']
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '127.0.0.1, localhost').split(', ')
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -94,7 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
