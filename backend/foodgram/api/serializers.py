@@ -235,6 +235,14 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'ingredients', 'tags', 'image', 'name', 'text', 'cooking_time'
         )
 
+    def validate(self, data):
+        lst = [ingredient.get('id') for ingredient in data.get('ingredients')]
+        if len(lst) == len(set(lst)):
+            return data
+        raise serializers.ValidationError(
+            'В рецепте два одинаковых ингредиента'
+        )
+
     def create_ingredients(self, ingredients, recipe):
         ingredients_list = []
         for ingredient in ingredients:
