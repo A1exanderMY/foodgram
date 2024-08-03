@@ -69,59 +69,52 @@ class RecipeViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
             return RecipeGetSerializer
-        if self.action in (
-            'add_and_remove_from_favorite',
-            'add_and_remove_from_shopping_cart'
-        ):
+        if self.action in ('favorite', 'shopping_cart'):
             return ShortRecipeSerializer
         return RecipeCreateSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    def remove_from_favorite_or_cart(self, request, model, instance):
+        """Метод удаления рецепта из избранного/корзины."""
+        obj = model.objects.filter(
+            user=request.user, recipe=instance
+        )
+        if obj.exists():
+            obj.delete()
+            return Response('Рецепт удален', status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def add_to_favorite_or_cart(self, request, model, instance):
+        """Метод добавления рецепта в избранное/корзину."""
+        obj = model.objects.filter(
+            user=request.user, recipe=instance
+        )
+        if obj.exists():
+            return Response('Рецепт уже добавлен',
+                            status=status.HTTP_400_BAD_REQUEST)
+        model.objects.create(user=request.user, recipe=instance)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated], url_path='favorite')
-    def add_and_remove_from_favorite(self, request, pk):
+    def favorite(self, request, pk):
         """Добавление/удаление рецепта в избранное."""
         recipe = get_object_or_404(Recipe, pk=pk)
-        favorite = Favorite.objects.filter(
-            user=self.request.user, recipe=recipe
-        )
         if request.method == 'POST':
-            if favorite.exists():
-                return Response('Рецепт уже добавлен',
-                                status=status.HTTP_400_BAD_REQUEST)
-            Favorite.objects.create(user=self.request.user, recipe=recipe)
-            serializer = self.get_serializer(recipe)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if favorite.exists():
-            favorite.delete()
-            return Response('Рецепт удален',
-                            status=status.HTTP_204_NO_CONTENT)
-        return Response('Рецепт уже удален',
-                        status=status.HTTP_400_BAD_REQUEST)
+            return self.add_to_favorite_or_cart(request, Favorite, recipe)
+        return self.remove_from_favorite_or_cart(request, Favorite, recipe)
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated], url_path='shopping_cart')
-    def add_and_remove_from_shopping_cart(self, request, pk):
+    def shopping_cart(self, request, pk):
         """Добавление/удаление рецепта в корзину."""
         recipe = get_object_or_404(Recipe, pk=pk)
-        shopping_cart = ShoppingCart.objects.filter(
-            user=self.request.user, recipe=recipe
-        )
         if request.method == 'POST':
-            if shopping_cart.exists():
-                return Response('Рецепт уже добавлен',
-                                status=status.HTTP_400_BAD_REQUEST)
-            ShoppingCart.objects.create(user=self.request.user, recipe=recipe)
-            serializer = self.get_serializer(recipe)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if shopping_cart.exists():
-            shopping_cart.delete()
-            return Response('Рецепт удален',
-                            status=status.HTTP_204_NO_CONTENT)
-        return Response('Рецепт уже удален из корзины',
-                        status=status.HTTP_400_BAD_REQUEST)
+            return self.add_to_favorite_or_cart(request, ShoppingCart, recipe)
+        return self.remove_from_favorite_or_cart(request, ShoppingCart, recipe)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
