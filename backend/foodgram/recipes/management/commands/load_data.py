@@ -5,7 +5,7 @@ from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
-    """Добавление ингридиентов в БД."""
+    """Добавление ингредиентов в БД."""
 
     def handle(self, *args, **kwargs):
         path = 'recipes/data/ingredients.csv'
@@ -14,4 +14,4 @@ class Command(BaseCommand):
                 Ingredient.objects.get_or_create(
                     name=row[0], measurement_unit=row[1],
                 )
-        self.stdout.write(self.style.SUCCESS('Ингридиенты загружены в БД'))
+        self.stdout.write(self.style.SUCCESS('Ингредиенты загружены в БД'))

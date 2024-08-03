@@ -25,7 +25,7 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    """Класс ингридиентов."""
+    """Класс ингредиентов."""
 
     name = models.CharField(verbose_name='Название', max_length=128)
     measurement_unit = models.CharField(
@@ -33,8 +33,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'ингридиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'ингредиенты'
 
     def __str__(self):
         return self.name
@@ -48,11 +48,12 @@ class Recipe(models.Model):
         User, verbose_name='Автор', on_delete=models.CASCADE
     )
     image = models.ImageField(
-        upload_to='recipes/', null=True, default=None
+        upload_to='recipes/', verbose_name='Изображение',
+        null=True, default=None
     )
     text = models.TextField(verbose_name='Описание рецепта')
     ingredients = models.ManyToManyField(
-        Ingredient, verbose_name='Ингридиенты', through='RecipeIngredient'
+        Ingredient, verbose_name='Ингредиенты', through='RecipeIngredient'
     )
     tags = models.ManyToManyField(Tag, blank=False, verbose_name='Тэги')
     cooking_time = models.IntegerField(
@@ -73,17 +74,21 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    """Вспомогательная модель для рецептов и ингридиентов."""
+    """Вспомогательная модель рецептов и ингредиентов."""
 
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, verbose_name='Рецепт', on_delete=models.CASCADE
+    )
+    ingredient = models.ForeignKey(
+        Ingredient, verbose_name='Ингредиент', on_delete=models.CASCADE
+    )
     amount = models.PositiveSmallIntegerField(
         verbose_name='Количество', validators=(MinValueValidator(1),)
     )
 
     class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'ингридиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'ингредиенты'
         default_related_name = 'recipe_ingredients'
         constraints = [
             models.UniqueConstraint(
@@ -132,7 +137,7 @@ class Favorite(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Избранные рецепт'
+        verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'избранные рецепты'
         default_related_name = 'favorite'
         constraints = [
@@ -149,8 +154,10 @@ class Favorite(models.Model):
 class ShortLink(models.Model):
     """Модель короткой ссылки."""
 
-    lurl = models.URLField(max_length=255)
-    surl = models.CharField(max_length=132, unique=True)
+    lurl = models.URLField(max_length=255, verbose_name='Оригинальная ссылка',)
+    surl = models.CharField(
+        max_length=132, verbose_name='Короткая ссылка', unique=True
+    )
 
     class Meta:
         verbose_name = 'Короткая ссылка'

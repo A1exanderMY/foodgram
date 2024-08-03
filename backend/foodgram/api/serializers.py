@@ -236,8 +236,10 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        lst = [ingredient.get('id') for ingredient in data.get('ingredients')]
-        if len(lst) == len(set(lst)):
+        ingredienеts_list = [
+            ingredient.get('id') for ingredient in data.get('ingredients')
+        ]
+        if len(ingredienеts_list) == len(set(ingredienеts_list)):
             return data
         raise serializers.ValidationError(
             'В рецепте два одинаковых ингредиента'
