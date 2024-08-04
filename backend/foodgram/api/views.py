@@ -12,16 +12,6 @@ from rest_framework.decorators import action, api_view
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from recipes.models import (
-    Favorite,
-    Ingredient,
-    Recipe,
-    RecipeIngredient,
-    ShortLink,
-    ShoppingCart,
-    Tag
-)
-from users.models import Subscriber, User
 
 from .filters import IngredientFilter, RecipeFilter
 from .paginators import LimitPageNumberPaginator
@@ -38,6 +28,16 @@ from .serializers import (
     TagSerializer,
     UserSerializer
 )
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    ShortLink,
+    ShoppingCart,
+    Tag
+)
+from users.models import Subscriber, User
 
 
 class TagViewSet(ReadOnlyModelViewSet):
