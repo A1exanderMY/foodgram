@@ -290,5 +290,5 @@ class ShortLinkSerializer(serializers.ModelSerializer):
         model = ShortLink
         fields = ('short_link',)
 
-    def to_representation(self, instance):
-        return {'short-link': instance.surl}
+    def to_representation(self, value):
+        return {'short-link': value.surl}
