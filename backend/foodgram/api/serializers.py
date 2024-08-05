@@ -11,7 +11,7 @@ from rest_framework.validators import UniqueValidator
 
 from .fields import Base64ImageField
 from recipes.models import (
-    Favorite, Ingredient, Recipe, RecipeIngredient, ShortLink, Tag
+    Ingredient, Recipe, RecipeIngredient, ShortLink, Tag
 )
 from users.models import User
 
@@ -182,7 +182,7 @@ class RecipeGetSerializer(serializers.ModelSerializer):
         request = self.context['request']
         if request.user.is_anonymous:
             return False
-        return Favorite.objects.filter(user=request.user).exists()
+        return object.favorite.filter(user=request.user).exists()
 
     def get_is_in_shopping_cart(self, object):
         request = self.context['request']
