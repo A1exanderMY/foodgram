@@ -289,3 +289,6 @@ class ShortLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortLink
         fields = ('short_link',)
+
+    def to_representation(self, instance):
+        return {'short-link': instance.surl}
