@@ -221,8 +221,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         write_only=True, many=True
     )
     image = Base64ImageField()
-    name = serializers.CharField()
-    text = serializers.CharField()
     cooking_time = serializers.IntegerField(
         validators=[MinValueValidator(
             1, 'Время приготовления должно быть больше 0'),
@@ -263,7 +261,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
         self.create_ingredients(ingredients, recipe)
-        return recipe
+        return super().create(validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
@@ -274,6 +272,13 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         instance.tags.set(tags)
         return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        request = self.context['request']
+        serializer = RecipeGetSerializer(
+            instance, context={'request': request}
+        )
+        return serializer.data
 
 
 class ShortLinkSerializer(serializers.ModelSerializer):
