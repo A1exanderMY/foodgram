@@ -8,5 +8,5 @@ class IsAuthorOrAdminOrReadOnly(BasePermission):
             obj.author == request.user
             or request.method in SAFE_METHODS
             or request.user.is_authenticated
-            and request.user.is_superuser
+            or request.user.is_superuser
         )
